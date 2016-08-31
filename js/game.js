@@ -39,4 +39,10 @@ var Container = connect(mapStateToProps)(Game);
 
 
 /** Exports the Game that has been connected with the state */
-module.exports = Container;
+//module.exports = Container;
+
+module.exports = {
+  game: Game,
+  container: Container
+}
+////(env = testenv? <NewGameContainer /> : <InputContainer />}

@@ -2,6 +2,7 @@
 var actions = require('./actions');
 var update = require('react-addons-update');
 
+
 /** Set the variables of a new game */
 var initialGameState = {
   randNum: parseInt(Math.random() * (100) + 1),
@@ -54,14 +55,14 @@ var gameController = function(state, action) {
       else {
         numRating = 'You win!'
       }
-      console.log('randNum is', state.randNum);
-      console.log('userNum is', action.userNum);
-      console.log('numRating is', numRating);
+    //console.log('randNum is', state.randNum);
+    //console.log('userNum is', action.userNum);
+    //console.log('numRating is', numRating);
 
       var initSet = state.guessSet.slice();
-      console.log('initSet is', initSet);
+      //console.log('initSet is', initSet);
       var afterSet = initSet.concat([action.userNum]);
-      console.log('afterSet is', afterSet);
+      //console.log('afterSet is', afterSet);
 
 
       var guessCounter = state.guessCount + 1

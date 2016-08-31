@@ -14,5 +14,12 @@ describe('Action Constructors', function() {
         userNum: number
       }
       Actions.makeGuess(number).should.equal.expectedAction;
+
     });
+it('Sets the state to initial value to start a new game',  function() {
+    var expectedAction = {
+      type: Actions.START_NEWGAME,
+    }
+    Actions.startNewGame.should.equal.expectedAction;
+  });
 });

@@ -1,6 +1,12 @@
-// 1. User inputs a guess
-// 2. User start a new game
 
+/**
+* MAKE_GUESS Action
+* @namespace MAKE_GUESS
+* A user action that inputs a guess for the game
+* @param {guess} The user input for the guess
+* @returns {type} The type of action that gets passed to the reducer
+* @returns {userNum} The user input that gets passed through the reducer
+*/
 var MAKE_GUESS = 'MAKE_GUESS';
 var makeGuess = function(guess) {
   return {
@@ -9,6 +15,12 @@ var makeGuess = function(guess) {
   }
 }
 
+/**
+* START_NEWGAME Action
+* @namespace START_NEWGAME
+* A user action that begins a new game (returns game to initial state)
+* @returns {type} The type of action that gets passed to the reducer
+*/
 var START_NEWGAME = 'START_NEWGAME';
 var startNewGame = function() {
   return {
@@ -16,7 +28,7 @@ var startNewGame = function() {
   }
 }
 
-
+/** Exports actions */
 exports.MAKE_GUESS = MAKE_GUESS;
 exports.makeGuess = makeGuess;
 exports.START_NEWGAME = START_NEWGAME;

@@ -46,9 +46,7 @@
 
 	'use strict';
 	
-	// var actions = require('./actions');
-	// var reducers = require('./reducers');
-	// var redux = require('redux');
+	/** Declaring dependencies */
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(34);
 	var Provider = __webpack_require__(172).Provider;
@@ -56,11 +54,7 @@
 	var store = __webpack_require__(195);
 	var Game = __webpack_require__(200);
 	
-	// store.dispatch(actions.makeGuess(53));
-	// store.dispatch(actions.makeGuess(23));
-	// store.dispatch(actions.makeGuess(1));
-	// console.log(store.getState());
-	
+	/** Renders the game using data from the store */
 	document.addEventListener('DOMContentLoaded', function () {
 	  ReactDOM.render(React.createElement(
 	    Provider,
@@ -188,25 +182,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -227,6 +236,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -22990,13 +23004,20 @@
 
 	'use strict';
 	
+	/** Declaring dependencies */
 	var redux = __webpack_require__(179);
 	var createStore = redux.createStore;
+	// var enhancersDevTools = compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
+	//   return f;
+	// });
 	
 	var reducers = __webpack_require__(196);
 	var actions = __webpack_require__(197);
 	
+	/** Creating a store for the state produced by the gameController reducer */
 	var store = createStore(reducers.gameController);
+	
+	/** Exports the store */
 	module.exports = store;
 
 /***/ },
@@ -23005,9 +23026,11 @@
 
 	'use strict';
 	
+	/** Declaring dependencies */
 	var actions = __webpack_require__(197);
 	var update = __webpack_require__(198);
 	
+	/** Set the variables of a new game */
 	var initialGameState = {
 	  randNum: parseInt(Math.random() * 100 + 1),
 	  myNum: 0,
@@ -23016,6 +23039,14 @@
 	  guessSet: []
 	};
 	
+	/**
+	* gameController Funtion
+	* @namespace gameController
+	* Handles the logic for processing user input (guess) for the game
+	* @param {state} The current state of the game
+	* @param {action} The action that has been dispatched to the reducer (MAKE_GUESS or START_NEWGAME)
+	* @returns {state} The state of the game after having been processed by this function
+	*/
 	var gameController = function gameController(state, action) {
 	  state = state || initialGameState;
 	  if (action.type === actions.MAKE_GUESS) {
@@ -23079,6 +23110,7 @@
 	  return state;
 	};
 	
+	/** Exports gameController */
 	exports.gameController = gameController;
 
 /***/ },
@@ -23087,9 +23119,14 @@
 
 	'use strict';
 	
-	// 1. User inputs a guess
-	// 2. User start a new game
-	
+	/**
+	* MAKE_GUESS Action
+	* @namespace MAKE_GUESS
+	* A user action that inputs a guess for the game
+	* @param {guess} The user input for the guess
+	* @returns {type} The type of action that gets passed to the reducer
+	* @returns {userNum} The user input that gets passed through the reducer
+	*/
 	var MAKE_GUESS = 'MAKE_GUESS';
 	var makeGuess = function makeGuess(guess) {
 	  return {
@@ -23098,6 +23135,12 @@
 	  };
 	};
 	
+	/**
+	* START_NEWGAME Action
+	* @namespace START_NEWGAME
+	* A user action that begins a new game (returns game to initial state)
+	* @returns {type} The type of action that gets passed to the reducer
+	*/
 	var START_NEWGAME = 'START_NEWGAME';
 	var startNewGame = function startNewGame() {
 	  return {
@@ -23105,6 +23148,7 @@
 	  };
 	};
 	
+	/** Exports actions */
 	exports.MAKE_GUESS = MAKE_GUESS;
 	exports.makeGuess = makeGuess;
 	exports.START_NEWGAME = START_NEWGAME;
@@ -23241,20 +23285,21 @@
 
 	'use strict';
 	
+	/** Declaring dependencies */
 	var React = __webpack_require__(1);
 	var connect = __webpack_require__(172).connect;
 	
 	var InputContainer = __webpack_require__(201);
 	var NewGameContainer = __webpack_require__(202);
 	
+	/**
+	* Game field constructor
+	* @namespace Game
+	* @constructor
+	* Outputs information about the current game
+	* Selects whether to display a New Game option if the current game has been won
+	*/
 	var Game = function Game(props) {
-	  var userControls;
-	  if (props.numHotness == 'You win!') {
-	    userControls = React.createElement(NewGameContainer, null);
-	  } else {
-	    userControls = React.createElement(InputContainer, null);
-	  }
-	
 	  return React.createElement(
 	    'div',
 	    { className: 'gameField' },
@@ -23276,11 +23321,15 @@
 	      'Your guesses so far: ',
 	      props.guessSet.toString()
 	    ),
-	    userControls,
 	    props.numHotness == 'You win!' ? React.createElement(NewGameContainer, null) : React.createElement(InputContainer, null)
 	  );
 	};
 	
+	/**
+	* Map State to Props
+	* @constructor
+	* Identifying which portions of the state correlate to which props
+	*/
 	var mapStateToProps = function mapStateToProps(state, props) {
 	  return {
 	    randNum: state.randNum,
@@ -23290,9 +23339,10 @@
 	  };
 	};
 	
+	/** Connect the state/props mapper to the Game constructor */
 	var Container = connect(mapStateToProps)(Game);
 	
-	//module.exports = Game;
+	/** Exports the Game that has been connected with the state */
 	module.exports = Container;
 
 /***/ },
@@ -23301,24 +23351,24 @@
 
 	'use strict';
 	
+	/** Declaring dependencies */
 	var React = __webpack_require__(1);
 	var actions = __webpack_require__(197);
 	var connect = __webpack_require__(172).connect;
 	
+	/**
+	* Input constructor
+	* @namespace InputContainer
+	* @constructor
+	* Renders an input box with a submit button to allow user to make a game guess
+	* Allows user to input a guess into the game that gets dispatched to an action
+	*/
 	var InputContainer = React.createClass({
 	  displayName: 'InputContainer',
 	
 	  onGuessSubmit: function onGuessSubmit(event) {
 	    event.preventDefault();
 	    var userNum = parseInt(this.refs.userInput.value);
-	    /*
-	            for (var i = 0; i < userEntered.length; i++) {
-	              if (userEntered[i] == userNum) {
-	                alert('You already entered this number!');
-	                return;
-	              }
-	            }*/
-	
 	    this.props.dispatch(actions.makeGuess(userNum));
 	    this.refs.userInput.value = null;
 	  },
@@ -23341,8 +23391,10 @@
 	  }
 	});
 	
+	/** Connect the state with the InputContainer constructor */
 	var Container = connect()(InputContainer);
 	
+	/** Exports the InputContainer that has been connected with the state */
 	module.exports = Container;
 
 /***/ },
@@ -23351,10 +23403,17 @@
 
 	'use strict';
 	
+	/** Declaring dependencies */
 	var React = __webpack_require__(1);
 	var actions = __webpack_require__(197);
 	var connect = __webpack_require__(172).connect;
 	
+	/**
+	* New Game button constructor
+	* @namespace NewGameContainer
+	* @constructor
+	* Renders a button that allows the user to start a new game
+	*/
 	var NewGameContainer = React.createClass({
 	  displayName: 'NewGameContainer',
 	
@@ -23362,7 +23421,6 @@
 	    event.preventDefault();
 	    this.props.dispatch(actions.startNewGame());
 	  },
-	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -23380,8 +23438,10 @@
 	  }
 	});
 	
+	/** Connect the state with the NewGameContainer constructor */
 	var Container = connect()(NewGameContainer);
 	
+	/** Exports the NewGameContainer that has been connected with the state */
 	module.exports = Container;
 
 /***/ }

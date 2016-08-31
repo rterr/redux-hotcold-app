@@ -1,6 +1,8 @@
+/** Declaring dependencies */
 var actions = require('./actions');
 var update = require('react-addons-update');
 
+/** Set the variables of a new game */
 var initialGameState = {
   randNum: parseInt(Math.random() * (100) + 1),
   myNum: 0,
@@ -9,6 +11,14 @@ var initialGameState = {
   guessSet: []
 };
 
+/**
+* gameController Funtion
+* @namespace gameController
+* Handles the logic for processing user input (guess) for the game
+* @param {state} The current state of the game
+* @param {action} The action that has been dispatched to the reducer (MAKE_GUESS or START_NEWGAME)
+* @returns {state} The state of the game after having been processed by this function
+*/
 var gameController = function(state, action) {
     state = state || initialGameState;
     if (action.type === actions.MAKE_GUESS){
@@ -78,4 +88,5 @@ var gameController = function(state, action) {
     return state;
 };
 
+/** Exports gameController */
 exports.gameController = gameController;

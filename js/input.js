@@ -32,4 +32,9 @@ var InputContainer = React.createClass({
 var Container = connect()(InputContainer);
 
 /** Exports the InputContainer that has been connected with the state */
-module.exports = Container;
+//module.exports = Container;
+
+module.exports = {
+  input: InputContainer,
+  container: Container
+}

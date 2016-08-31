@@ -2,8 +2,8 @@
 var React = require('react');
 var connect = require('react-redux').connect;
 
-var InputContainer = require('./input');
-var NewGameContainer = require('./newgame');
+var InputContainer = require('./input').input;
+var NewGameContainer = require('./newgame').newGame;
 
 /**
 * Game field constructor
@@ -45,4 +45,3 @@ module.exports = {
   game: Game,
   container: Container
 }
-////(env = testenv? <NewGameContainer /> : <InputContainer />}

@@ -15,34 +15,29 @@ var initialGameState = {
   guessSet: []
 };
 
-// describe('Reducers', function() {
-//     it('should modify the state based upon the action',  function() {
-//       state = initialGameState;
-//       expect(
-//         Reducers(undefined, {})
-//       ).toEqual([
-//         {
-//           myNum: 0,
-//           numHotness: '',
-//           guessCount: 0,
-//           guessSet: []
-//         }
-//       ])
-//     }
-// });
-
 describe('Testing the reducers', function() {
     it('return the initial state',  function() {
       var state = initialGameState;
       var result = Reducers.gameController(state, {});
-      console.log(result);
+      //console.log(result);
       result.myNum.should.equal(0);
       result.numHotness.should.equal('');
       result.guessCount.should.equal(0);
       result.guessSet.should.be.a.array;
       result.guessSet.length.should.equal(0);
     })
-    it('should modify the state based upon the action',  function() {
+    // it('should refuse a non-integer or an integer greater than 100',  function() {
+    //   var state = initialGameState;
+    //   var result = Reducers.gameController(state, Actions.makeGuess('apple'));
+    //   console.log(result);
+    //   // result.myNum.should.equal(0);
+    //   // result.numHotness.should.equal('');
+    //   // result.guessCount.should.equal(0);
+    //   // result.guessSet.should.be.a.array;
+    //   // result.guessSet.length.should.equal(0);
+    // })
+
+    it('modify the state based upon the action',  function() {
       var state = initialGameState;
       var result = Reducers.gameController(state, Actions.makeGuess(5));
       result.myNum.should.equal(5);

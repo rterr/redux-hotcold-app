@@ -26,4 +26,8 @@ var NewGameContainer = React.createClass({
 var Container = connect()(NewGameContainer);
 
 /** Exports the NewGameContainer that has been connected with the state */
-module.exports = Container;
+//module.exports = Container;
+module.exports = {
+  newGame: NewGameContainer,
+  container: Container
+}

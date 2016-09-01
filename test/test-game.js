@@ -45,7 +45,7 @@ describe('Game component', function() {
       renderer.render(
         <Game guessCount='5' numHotness={hotness} guessSet='[1, 2, 3]' />)
       var game = renderer.getRenderOutput();
-      game.props.children[3].type.displayName.should.equal('Connect(InputContainer)');
+      game.props.children[3].type.displayName.should.equal('InputContainer');
     });
     it('Renders the new game container', function(){
       var renderer = TestUtils.createRenderer();
@@ -53,6 +53,6 @@ describe('Game component', function() {
       renderer.render(
         <Game guessCount='5' numHotness={hotness} guessSet='[1, 2, 3]' />)
       var game = renderer.getRenderOutput();
-      game.props.children[3].type.displayName.should.equal('Connect(NewGameContainer)');
+      game.props.children[3].type.displayName.should.equal('NewGameContainer');
     });
 });

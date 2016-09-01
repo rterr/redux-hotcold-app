@@ -10,7 +10,7 @@ var Game = require('./game').container;
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
       <Provider store={store}>
-        <Game/>
+        <Game />
       </Provider>,
       document.getElementById('app')
     );

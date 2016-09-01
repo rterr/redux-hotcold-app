@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "http-server build/",
     "mkdir": "mkdir -p build",
-    "build": "npm run clean && npm run mkdir && npm run build:js && npm run build:html && npm run serve",
+    "build": "npm run clean && npm run mkdir && npm run build:js && npm run build:html",
     "watch": "npm run watch:html & npm run watch:js",
     "clean": "rm -rf build",
     "test": "mocha --compilers js:babel-register test/*.js*",
@@ -23,11 +23,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "isomorphic-fetch": "^2.2.1",
     "react": "^15.3.1",
     "react-addons-update": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",
@@ -42,10 +46,13 @@
     "less-plugin-clean-css": "^1.5.1",
     "mocha": "^3.0.2",
     "react-addons-test-utils": "^15.3.1",
+    "sinon": "^1.17.5",
     "webpack": "^1.13.2"
   },
-
   "babel": {
-  "presets": ["es2015", "react"]
+    "presets": [
+      "es2015",
+      "react"
+    ]
   }
 }

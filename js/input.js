@@ -2,6 +2,7 @@
 var React = require('react');
 var actions = require('./actions');
 var connect = require('react-redux').connect;
+var redux = require('redux');
 
 /**
 * Input constructor
@@ -27,6 +28,12 @@ var InputContainer = React.createClass({
           </div>)
     }
 });
+
+var mapStateToProps = function(state, props) {
+    return {
+      highScore: state.highScore
+    };
+};
 
 /** Connect the state with the InputContainer constructor */
 var Container = connect()(InputContainer);

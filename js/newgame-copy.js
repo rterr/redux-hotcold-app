@@ -13,7 +13,6 @@ var NewGameContainer = React.createClass({
   onNewGameSubmit: function(event) {
     event.preventDefault();
     this.props.dispatch(actions.startNewGame());
-    this.props.dispatch(actions.fetchHighScore());
   },
     render: function(){
       return(
@@ -23,14 +22,8 @@ var NewGameContainer = React.createClass({
     }
 });
 
-var mapStateToProps = function(state, props) {
-    return {
-      highScore: state.highScore
-    };
-};
-
 /** Connect the state with the NewGameContainer constructor */
-var Container = connect(mapStateToProps)(NewGameContainer);
+var Container = connect()(NewGameContainer);
 
 /** Exports the NewGameContainer that has been connected with the state */
 //module.exports = Container;

@@ -2,8 +2,8 @@
 var React = require('react');
 var connect = require('react-redux').connect;
 
-var InputContainer = require('./input').input;
-var NewGameContainer = require('./newgame').newGame;
+var InputContainer = require('./input').container;
+var NewGameContainer = require('./newgame').container;
 
 /**
 * Game field constructor
@@ -14,10 +14,11 @@ var NewGameContainer = require('./newgame').newGame;
 */
 var Game = function(props) {
   return(
-       <div className="gameField"><div className="numHotness">Rating: {props.numHotness}</div>
+      <div className="gameField"><div className="numHotness">Rating: {props.numHotness}</div>
       <div className="guessCount">Number of guesses: {props.guessCount}</div>
       <div className="guessSet">Your guesses so far: {props.guessSet.toString()}</div>
      {props.numHotness == 'You win!' ? <NewGameContainer /> : <InputContainer />}
+     <div className="highScore">High score: {props.highScore} guesses</div>
      </div> )}
 
 /**
@@ -30,7 +31,8 @@ var mapStateToProps = function(state, props) {
       randNum: state.randNum,
       numHotness: state.numHotness,
       guessCount: state.guessCount,
-      guessSet: state.guessSet
+      guessSet: state.guessSet,
+      highScore: state.highScore
     };
 };
 

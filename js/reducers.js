@@ -9,7 +9,8 @@ var initialGameState = {
   myNum: 0,
   numHotness: '',
   guessCount: 0,
-  guessSet: []
+  guessSet: [],
+  highScore: 997
 };
 
 /**
@@ -34,7 +35,7 @@ var gameController = function(state, action) {
             return state;
           }
         };
-
+      console.log(state.randNum);
       var numRating;
       var diffNum = Math.abs(state.randNum - action.userNum);
       if (diffNum >= 50){
@@ -79,11 +80,26 @@ var gameController = function(state, action) {
 
     if (action.type === actions.START_NEWGAME){
       var newRandNum = parseInt(Math.random() * (100) + 1)
-      var newGameState = update(initialGameState, {
+      var newGameState = update(state, {
+        myNum: {$set: 0},
+        numHotness: {$set: ''},
+        guessSet: {$set: []},
+        guessCount: {$set: 0},
         randNum: {$set: newRandNum}
       })
 
       return newGameState;
+    };
+
+    if (action.type === actions.FETCH_HIGHSCORE){
+      state = state || initialGameState;
+      var newState = update(state, {
+        highScore: {$set: action.score},
+      });
+    };
+
+    if (action.type === actions.SEND_SCORE){
+
     };
 
     return state;

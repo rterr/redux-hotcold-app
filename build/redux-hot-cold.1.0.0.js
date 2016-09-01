@@ -23064,7 +23064,7 @@
 	  numHotness: '',
 	  guessCount: 0,
 	  guessSet: [],
-	  highScore: 997
+	  highScore: 0
 	};
 	
 	/**
@@ -23141,10 +23141,13 @@
 	  };
 	
 	  if (action.type === actions.FETCH_HIGHSCORE) {
+	    console.log('action fetchHighscore working');
+	    console.log(action.highScore);
 	    state = state || initialGameState;
 	    var newState = update(state, {
-	      highScore: { $set: action.score }
+	      highScore: { $set: action.highScore }
 	    });
+	    return newState;
 	  };
 	
 	  if (action.type === actions.SEND_SCORE) {};
@@ -23192,13 +23195,30 @@
 	  };
 	};
 	
+	var SEND_SCORE = 'SEND_SCORE';
+	var sendScore = function sendScore(score) {
+	  return {
+	    type: SEND_SCORE,
+	    highScore: score
+	
+	  };
+	};
+	
 	var FETCH_HIGHSCORE = 'FETCH_HIGHSCORE';
-	var fetchHighScore = function fetchHighScore() {
+	var fetchHighScore = function fetchHighScore(score) {
+	  return {
+	    type: FETCH_HIGHSCORE,
+	    highScore: score
+	  };
+	};
+	
+	var FETCH_SCORE = 'FETCH_SCORE';
+	var fetchScore = function fetchScore() {
 	  // return {
 	  //   type: FETCH_HIGHSCORE,
 	  //   highScore: highScore
 	  // }
-	  return function () {
+	  return function (dispatch) {
 	    var url = 'http://localhost:8080/getScore/';
 	    console.log('fetch running');
 	    return fetch(url).then(function (res) {
@@ -23208,10 +23228,14 @@
 	        error.res = res;
 	        throw error;
 	      }
-	      return {
-	        type: FETCH_HIGHSCORE,
-	        //highScore: res.score}
-	        highScore: 50 };
+	      return res;
+	      // return {
+	      //   type: FETCH_HIGHSCORE,
+	      //   //highScore: res.score}
+	      //   highScore: 50}
+	    }).then(function () {
+	      console.log('fetchHighScore promise worked');
+	      return dispatch(fetchHighScore(15));
 	    });
 	    // .then(function(res) {
 	    //     return res.json();
@@ -23219,15 +23243,10 @@
 	  };
 	};
 	
-	var SEND_SCORE = 'SEND_SCORE';
-	var sendScore = function sendScore(score) {
-	  return {
-	    type: SEND_SCORE,
-	    highScore: score
-	
-	  };
-	};
 	/** Exports actions */
+	
+	exports.FETCH_SCORE = FETCH_SCORE;
+	exports.fetchScore = fetchScore;
 	exports.MAKE_GUESS = MAKE_GUESS;
 	exports.makeGuess = makeGuess;
 	exports.START_NEWGAME = START_NEWGAME;
@@ -23979,7 +23998,7 @@
 	  onNewGameSubmit: function onNewGameSubmit(event) {
 	    event.preventDefault();
 	    this.props.dispatch(actions.startNewGame());
-	    this.props.dispatch(actions.fetchHighScore());
+	    this.props.dispatch(actions.fetchScore());
 	  },
 	  render: function render() {
 	    return React.createElement(

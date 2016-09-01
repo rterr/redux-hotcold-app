@@ -10,7 +10,7 @@ var initialGameState = {
   numHotness: '',
   guessCount: 0,
   guessSet: [],
-  highScore: 997
+  highScore: 0
 };
 
 /**
@@ -92,10 +92,13 @@ var gameController = function(state, action) {
     };
 
     if (action.type === actions.FETCH_HIGHSCORE){
+      console.log('action fetchHighscore working');
+      console.log(action.highScore);
       state = state || initialGameState;
       var newState = update(state, {
-        highScore: {$set: action.score},
+        highScore: {$set: action.highScore},
       });
+      return newState;
     };
 
     if (action.type === actions.SEND_SCORE){

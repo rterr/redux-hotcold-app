@@ -6,7 +6,7 @@ var app = express();
 app.use('/', express.static('build'));
 
 
-var highScore = 999;
+var highScore = 5;
 
 app.get('/getScore', function (req, res) {
   console.log(highScore);

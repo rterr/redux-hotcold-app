@@ -13,7 +13,7 @@ var NewGameContainer = React.createClass({
   onNewGameSubmit: function(event) {
     event.preventDefault();
     this.props.dispatch(actions.startNewGame());
-    this.props.dispatch(actions.fetchHighScore());
+    this.props.dispatch(actions.fetchScore());
   },
     render: function(){
       return(

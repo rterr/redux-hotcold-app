@@ -102,6 +102,15 @@ var gameController = function(state, action) {
     };
 
     if (action.type === actions.SEND_SCORE){
+      console.log('action fetchScore working');
+      console.log(action.sendScore);
+      state = state || initialGameState;
+      var newScore = update(state, {
+        highScore: {$set: action.sendScore},
+      });
+      return newScore;
+
+
 
     };
 

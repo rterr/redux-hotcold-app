@@ -23150,7 +23150,15 @@
 	    return newState;
 	  };
 	
-	  if (action.type === actions.SEND_SCORE) {};
+	  if (action.type === actions.SEND_SCORE) {
+	    console.log('action fetchScore working');
+	    console.log(action.sendScore);
+	    state = state || initialGameState;
+	    var newScore = update(state, {
+	      highScore: { $set: action.sendScore }
+	    });
+	    return newScore;
+	  };
 	
 	  return state;
 	};
@@ -23199,7 +23207,7 @@
 	var sendScore = function sendScore(score) {
 	  return {
 	    type: SEND_SCORE,
-	    highScore: score
+	    sendScore: score
 	
 	  };
 	};
@@ -23228,18 +23236,55 @@
 	        error.res = res;
 	        throw error;
 	      }
-	      return res;
+	      return res.json();
 	      // return {
 	      //   type: FETCH_HIGHSCORE,
 	      //   //highScore: res.score}
 	      //   highScore: 50}
-	    }).then(function () {
+	    })
+	    // .then(function(response) {
+	    //   console.log('json data' + response.json());
+	    //   return response.json();
+	    // })
+	    .then(function (data) {
 	      console.log('fetchHighScore promise worked');
-	      return dispatch(fetchHighScore(15));
+	      console.log(data);
+	      return dispatch(fetchHighScore(data.score));
 	    });
 	    // .then(function(res) {
 	    //     return res.json();
 	    // })
+	  };
+	};
+	
+	var SAVE_SCORE = 'SAVE_SCORE';
+	var saveGuesses = function saveGuesses() {
+	  return function (dispatch) {
+	    var url = 'http://localhost:8080/getScore';
+	    return fetch(url, {
+	      method: 'post',
+	      headers: {
+	        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+	      },
+	      body: { "score": 4 }
+	    }).then(function (response) {
+	      if (response.status < 200 || response.status >= 300) {
+	        var error = new Error(response.statusText);
+	        error.response = response;
+	        throw error;
+	      }
+	      return response.json();
+	    }).then(function (data) {
+	      //var score = data.body.score;
+	
+	      return dispatch(sendScore(5));
+	    });
+	    // .catch(function(error) {
+	    //     var error = "error";
+	    //     return dispatch(
+	    //         fetchFewestGuessesError(error)
+	    //     );
+	    // });
 	  };
 	};
 	
@@ -23255,6 +23300,8 @@
 	exports.fetchHighScore = fetchHighScore;
 	exports.SEND_SCORE = SEND_SCORE;
 	exports.sendScore = sendScore;
+	exports.SAVE_SCORE = SAVE_SCORE;
+	exports.saveGuesses = saveGuesses;
 
 /***/ },
 /* 199 */
@@ -23997,6 +24044,7 @@
 	
 	  onNewGameSubmit: function onNewGameSubmit(event) {
 	    event.preventDefault();
+	    this.props.dispatch(actions.saveGuesses());
 	    this.props.dispatch(actions.startNewGame());
 	    this.props.dispatch(actions.fetchScore());
 	  },

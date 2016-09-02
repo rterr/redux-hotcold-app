@@ -12,6 +12,7 @@ var connect = require('react-redux').connect;
 var NewGameContainer = React.createClass({
   onNewGameSubmit: function(event) {
     event.preventDefault();
+    this.props.dispatch(actions.saveGuesses());
     this.props.dispatch(actions.startNewGame());
     this.props.dispatch(actions.fetchScore());
   },
